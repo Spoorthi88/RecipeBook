@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Recipe Book</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div class="container">
+    <h1>Recipe Book</h1>
+
+
+    <!-- Place the image here -->
+    <div style="text-align: center; background-color: #fdf6e3; padding: 20px; border-radius: 10px; margin-bottom: 20px;">
+      <img src="images/recipe.jpg" alt="Masala Pasta" width="300" style="border: 3px solid #555; border-radius: 10px;" />
+      <p style="font-style: italic; margin-top: 10px;">Masala Pasta - Indian Style</p>
+    </div>
+
+
+    <!-- Upload and preview user's recipe image -->
+    <div class="upload-section">
+      <h3>Upload Your Own Recipe Image</h3>
+      <input type="file" id="imageInput" accept="image/*">
+      <br>
+      <img id="previewImage" src="#" alt="No preview">
+      <br>
+      <button onclick="clearPreview()">Clear Preview</button>
+    </div>
+
+    <!-- Recipe form -->
+    <div class="form">
+      <input type="text" id="recipeName" placeholder="Recipe Name" required />
+      <textarea id="ingredients" placeholder="Ingredients" required></textarea>
+      <textarea id="steps" placeholder="Preparation Steps" required></textarea>
+      <button onclick="addRecipe()">Add Recipe</button>
+
+      <!-- Error message -->
+      <p id="errorMessage">Please fill in all fields before adding a recipe.</p>
+    </div>
+
+    <!-- Search bar -->
+    <input type="text" id="searchInput" placeholder="Search recipes..." onkeyup="searchRecipes()" />
+
+    <!-- Recipes container -->
+    <div id="recipesContainer"></div>
+  </div>
+
+  <!-- Success message -->
+  <div id="successMessage">Recipe added successfully!</div>
+
+  <!-- Script -->
+  <script>
+    const imageInput = document.getElementById('imageInput');
+    const previewImage = document.getElementById('previewImage');
+    const errorMessage = document.getElementById('errorMessage');
+    const successMessage = document.getElementById('successMessage');
+
+    imageInput.addEventListener('change', function () {
+      const file = this.files[0];
+      if (file) {
+        const reader = new FileReader();
+        reader.onload = function () {
+          previewImage.src = reader.result;
+          previewImage.style.display = 'block';
+        }
+        reader.readAsDataURL(file);
+      }
+    });
+
+    function clearPreview() {
+      previewImage.src = "#";
+      previewImage.style.display = "none";
+      imageInput.value = "";
+    }
+
+    function addRecipe() {
+      const name = document.getElementById('recipeName').value.trim();
+      const ingredients = document.getElementById('ingredients').value.trim();
+      const steps = document.getElementById('steps').value.trim();
+
+      if (!name || !ingredients || !steps) {
+        errorMessage.style.display = 'block';
+        successMessage.style.display = 'none';
+        return;
+      }
+
+      errorMessage.style.display = 'none';
+      successMessage.style.display = 'block';
+
+      setTimeout(() => {
+        successMessage.style.display = 'none';
+      }, 3000);
+
+      // Clear inputs
+      document.getElementById('recipeName').value = '';
+      document.getElementById('ingredients').value = '';
+      document.getElementById('steps').value = '';
+      clearPreview();
+    }
+
+    function searchRecipes() {
+      // Optional: Add filter logic later
+    }
+
+    // Hide messages initially
+    errorMessage.style.display = 'none';
+    successMessage.style.display = 'none';
+  </script>
+</body>
+</html>
